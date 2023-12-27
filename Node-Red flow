@@ -19,29 +19,9 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 900,
+        "x": 740,
         "y": 180,
         "wires": []
-    },
-    {
-        "id": "cc4f2cdec6e0768b",
-        "type": "function",
-        "z": "1d2da0ecb43531e3",
-        "name": "Stunden filtern",
-        "func": "// Hole die Daten vom HTTP-Request-Node\nconst marketData = msg.payload;\n\n// Überprüfe, ob Daten vorhanden sind\nif (!marketData || !marketData.data || marketData.data.length === 0) {\n    node.error('Keine Daten erhalten.');\n    return null;\n}\n\n// Überprüfe, ob die aktuelle Stunde zwischen 13 und 14 Uhr liegt\nconst currentHour = new Date().getHours();\nif (currentHour !== 13) {\n    // Falls nicht zwischen 13 und 14 Uhr, gib eine leere Nachricht zurück\n    return null;\n}\n\n// Sortiere nach Marktprize und dann nach Startzeit\nconst sortedData = marketData.data.sort((a, b) => a.marketprice - b.marketprice || a.start_timestamp - b.start_timestamp);\n\n// günstigsten Stunden auswählen\nconst cheapestHours = sortedData.slice(0, flow.get(\"AnzahlStunden\"));\n\n// Füge die 5 günstigsten Stunden dem Nachrichtenobjekt hinzu\nmsg.payload = {\n    cheapestHours: cheapestHours\n};\n\n// Speichere die 5 günstigsten Stunden im Flow-Context\nflow.set('cheapestHours', cheapestHours);\n\n// Rückgabe der modifizierten Nachricht\nreturn msg;\n",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 700,
-        "y": 180,
-        "wires": [
-            [
-                "8eec1f226c042e36"
-            ]
-        ]
     },
     {
         "id": "57cf21cbc848c7e2",
@@ -59,11 +39,11 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 500,
+        "x": 380,
         "y": 180,
         "wires": [
             [
-                "cc4f2cdec6e0768b"
+                "0c51d0c204ec39cb"
             ]
         ]
     },
@@ -89,85 +69,10 @@
         "payload": "",
         "payloadType": "date",
         "x": 160,
-        "y": 180,
-        "wires": [
-            [
-                "6b36c32c670485a7",
-                "a0c65ab5cd8a2851",
-                "e202f02b7a337ac4",
-                "be0b500794f32339"
-            ]
-        ]
-    },
-    {
-        "id": "6b36c32c670485a7",
-        "type": "delay",
-        "z": "1d2da0ecb43531e3",
-        "name": "+1m",
-        "pauseType": "delay",
-        "timeout": "60",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "1",
-        "rateUnits": "second",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": false,
-        "allowrate": false,
-        "outputs": 1,
-        "x": 330,
-        "y": 180,
-        "wires": [
-            [
-                "57cf21cbc848c7e2"
-            ]
-        ]
-    },
-    {
-        "id": "a0c65ab5cd8a2851",
-        "type": "delay",
-        "z": "1d2da0ecb43531e3",
-        "name": "+2m",
-        "pauseType": "delay",
-        "timeout": "70",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "1",
-        "rateUnits": "second",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": false,
-        "allowrate": false,
-        "outputs": 1,
-        "x": 330,
         "y": 240,
         "wires": [
             [
                 "17e257374cc4f17f"
-            ]
-        ]
-    },
-    {
-        "id": "7f22beaaa512c735",
-        "type": "rbe",
-        "z": "1d2da0ecb43531e3",
-        "name": "Änderungen weitergeben",
-        "func": "rbe",
-        "gap": "",
-        "start": "",
-        "inout": "out",
-        "septopics": true,
-        "property": "payload",
-        "topi": "topic",
-        "x": 950,
-        "y": 240,
-        "wires": [
-            [
-                "a748e5430cccdc80",
-                "0170e9b146bfe414",
-                "ec26c9f2c323b381"
             ]
         ]
     },
@@ -193,17 +98,17 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1150,
+        "x": 730,
         "y": 240,
         "wires": [
             [
                 "f2073ebb56594146",
                 "c044118ff3bc79b7",
-                "6669a65cb2aa872e"
+                "9295c4c91e663f18"
             ],
             [
                 "c044118ff3bc79b7",
-                "247704ba12d5d659"
+                "e2279e5fcd1c2d90"
             ]
         ]
     },
@@ -230,7 +135,7 @@
         "initial": "",
         "name": "Laden starten/stoppen",
         "onlyChanges": false,
-        "x": 1520,
+        "x": 1180,
         "y": 240,
         "wires": []
     },
@@ -253,7 +158,7 @@
         "initial": "",
         "name": "Ladeleistung",
         "onlyChanges": false,
-        "x": 1550,
+        "x": 1150,
         "y": 180,
         "wires": []
     },
@@ -276,7 +181,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1380,
+        "x": 960,
         "y": 180,
         "wires": [
             [
@@ -308,8 +213,8 @@
         "initial": "1",
         "name": "Auto Modus",
         "onlyChanges": false,
-        "x": 1370,
-        "y": 120,
+        "x": 1150,
+        "y": 300,
         "wires": []
     },
     {
@@ -336,8 +241,8 @@
         "initial": "1",
         "name": "Manuel Modus",
         "onlyChanges": false,
-        "x": 1380,
-        "y": 300,
+        "x": 1160,
+        "y": 120,
         "wires": []
     },
     {
@@ -357,61 +262,11 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 1350,
+        "x": 930,
         "y": 240,
         "wires": [
             [
                 "cf52d78e7ed2c30c"
-            ]
-        ]
-    },
-    {
-        "id": "8b09fcc6f01232fc",
-        "type": "inject",
-        "z": "1d2da0ecb43531e3",
-        "name": " debug 1",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "1",
-        "payloadType": "num",
-        "x": 740,
-        "y": 280,
-        "wires": [
-            [
-                "7f22beaaa512c735"
-            ]
-        ]
-    },
-    {
-        "id": "bd49a51a267e7f23",
-        "type": "inject",
-        "z": "1d2da0ecb43531e3",
-        "name": " debug 0",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "0",
-        "payloadType": "num",
-        "x": 740,
-        "y": 320,
-        "wires": [
-            [
-                "7f22beaaa512c735"
             ]
         ]
     },
@@ -427,54 +282,29 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 760,
+        "x": 600,
         "y": 400,
         "wires": []
-    },
-    {
-        "id": "84f1b4c061403106",
-        "type": "change",
-        "z": "1d2da0ecb43531e3",
-        "name": "0/1",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "payload.output",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 730,
-        "y": 240,
-        "wires": [
-            [
-                "7f22beaaa512c735"
-            ]
-        ]
     },
     {
         "id": "17e257374cc4f17f",
         "type": "function",
         "z": "1d2da0ecb43531e3",
         "name": "Zeit und Preis filtern",
-        "func": "// Holen Sie die günstigsten Stunden aus dem Flow-Context\nconst cheapestHoursData = flow.get('cheapestHours');\n\n\n// Überprüfe, ob Daten vorhanden sind\nif (!cheapestHoursData || cheapestHoursData.length === 0) {\n    node.error('Keine günstigen Stunden erhalten.');\n    return null;\n}\n\n// Definiere die maximale akzeptable Strompreisgrenze €/MWh (angepasst nach Bedarf)\nconst maxAcceptablePrice = flow.get(\"PreisgrenzeSOC\");\n\nconst currentHour = new Date().getHours();\n\nconst isInCheapestHour = cheapestHoursData.some(hour => {\n    const startHour = new Date(hour.start_timestamp).getHours();\n    const endHour = new Date(hour.end_timestamp).getHours();\n\n    return currentHour >= startHour &&\n           currentHour <= endHour &&\n           hour.marketprice <= maxAcceptablePrice;\n});\n\n// Setze die Ausgabe auf 1, wenn sich die aktuelle Stunde in einer der günstigsten Stunden mit akzeptablem Strompreis befindet, sonst auf 0\nmsg.payload = { output: isInCheapestHour ? 1 : 0 };\n\n// Rückgabe der modifizierten Nachricht\nreturn msg;\n",
+        "func": "// Hole die aktuelle Stunde\nvar currentHour = new Date().getHours();\n\n// Überprüfe, ob die aktuelle Stunde in den günstigsten Stunden ist und der Preis die Grenze unterschreitet\nvar isCheapestHour = flow.get(\"GünstigsteStunden\").some(function(hour) {\n    // Annahme: currentHour ist die aktuelle Stunde im Format 0-23\n    var currentTimestamp = Date.now();\n    \n    return currentTimestamp >= hour.start_timestamp && currentTimestamp < hour.end_timestamp && hour.marketprice < flow.get(\"Preisgrenze\");\n});\n\n\n// Setze den Payload auf 1 oder 0 basierend auf der Bedingung\nmsg.payload = isCheapestHour ? 1 : 0;\n\n// Gib die Nachricht aus\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 500,
+        "x": 380,
         "y": 240,
         "wires": [
             [
-                "84f1b4c061403106",
+                "a748e5430cccdc80",
+                "ec26c9f2c323b381",
+                "0170e9b146bfe414",
                 "f8307acf10b323eb"
             ]
         ]
@@ -484,15 +314,15 @@
         "type": "function",
         "z": "1d2da0ecb43531e3",
         "name": "Parameter",
-        "func": "//Generelle Parameter\n\nPreisgrenze = 20            // [€/MWh]\nAnzahlStunden = 5           // An wie vielen Stunden am Tag soll geladen werden\nSonnenAufgang = 5           // nachtladen Ende\nSonnenUntergang = 17        // nachtladen Start\nSOCPreis = 50               // [€/MWh] - Akzeptable Preiserhöhung in der nacht, sollte der Speicher leer sein\nSOCMin = 30                 // [%] SOC Wert der unterschritten werden muss, um die Nachtladung zu aktivieren\nLadeleistung = 150          // [A] Ladeleistungsbegrenzung mit denen der Akku geladen wird um die Multiplus zu schonen (max Leistung pro MP2 5000 = 70A)\nBezugsleistungMax = 15000   // [W] Gekaufte/Erlaubte Bezugsleistung vom Netzanbieter\n\n//Wallbox Parameter\nLadeleistungEV = 12         // [A] Ladeleisung der Wallbox\n\nflow.set('Preisgrenze', Preisgrenze)\nflow.set('AnzahlStunden', AnzahlStunden)\nflow.set('SonnenAufgang', SonnenAufgang)\nflow.set('SonnenUntergang', SonnenUntergang)\nflow.set('SOCPreis', SOCPreis)\nflow.set('SOCMin', SOCMin)\nflow.set('Ladeleistung', Ladeleistung)\nflow.set('BezugsleistungMax', BezugsleistungMax)\n\nflow.set('LadeleistungEV', LadeleistungEV)\n\nreturn msg;",
+        "func": "//Generelle Parameter\n\nPreisgrenze = 20            // [€/MWh]\nAnzahlStunden = 6           // An wie vielen Stunden am Tag soll geladen werden\nSonnenAufgang = 5           // nachtladen Ende\nSonnenUntergang = 17        // nachtladen Start\nSOCPreis = 50               // [€/MWh] - Akzeptable Preiserhöhung in der nacht, sollte der Speicher leer sein\nSOCMin = 30                 // [%] SOC Wert der unterschritten werden muss, um die Nachtladung zu aktivieren\nLadeleistung = 150          // [A] Ladeleistungsbegrenzung mit denen der Akku geladen wird um die Multiplus zu schonen (max Leistung pro MP2 5000 = 70A)\nBezugsleistungMax = 15000   // [W] Gekaufte/Erlaubte Bezugsleistung vom Netzanbieter\n\n//Wallbox Parameter\nLadeleistungEV = 12         // [A] Ladeleisung der Wallbox\n\nflow.set('Preisgrenze', Preisgrenze)\nflow.set('AnzahlStunden', AnzahlStunden)\nflow.set('SonnenAufgang', SonnenAufgang)\nflow.set('SonnenUntergang', SonnenUntergang)\nflow.set('SOCPreis', SOCPreis)\nflow.set('SOCMin', SOCMin)\nflow.set('Ladeleistung', Ladeleistung)\nflow.set('BezugsleistungMax', BezugsleistungMax)\n\nflow.set('LadeleistungEV', LadeleistungEV)\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 130,
-        "y": 340,
+        "x": 350,
+        "y": 120,
         "wires": [
             []
         ]
@@ -541,56 +371,6 @@
         ]
     },
     {
-        "id": "4512e40653271ee8",
-        "type": "inject",
-        "z": "1d2da0ecb43531e3",
-        "name": "debug",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 490,
-        "y": 140,
-        "wires": [
-            [
-                "57cf21cbc848c7e2"
-            ]
-        ]
-    },
-    {
-        "id": "382387d733eb6611",
-        "type": "inject",
-        "z": "1d2da0ecb43531e3",
-        "name": "debug",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "1",
-        "payloadType": "num",
-        "x": 490,
-        "y": 280,
-        "wires": [
-            [
-                "17e257374cc4f17f"
-            ]
-        ]
-    },
-    {
         "id": "6ab5e3f2450a4e5c",
         "type": "victron-output-ess",
         "z": "1d2da0ecb43531e3",
@@ -608,7 +388,7 @@
         },
         "name": "Ladestrombegrenzung",
         "onlyChanges": false,
-        "x": 1560,
+        "x": 1180,
         "y": 500,
         "wires": []
     },
@@ -642,7 +422,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1370,
+        "x": 950,
         "y": 500,
         "wires": [
             [
@@ -651,39 +431,13 @@
         ]
     },
     {
-        "id": "be0b500794f32339",
-        "type": "delay",
-        "z": "1d2da0ecb43531e3",
-        "name": "+30m",
-        "pauseType": "delay",
-        "timeout": "30",
-        "timeoutUnits": "minutes",
-        "rate": "1",
-        "nbRateUnits": "1",
-        "rateUnits": "second",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": false,
-        "allowrate": false,
-        "outputs": 1,
-        "x": 330,
-        "y": 140,
-        "wires": [
-            [
-                "57cf21cbc848c7e2"
-            ]
-        ],
-        "info": "Manchmal kommen die Preise von der API verspätet"
-    },
-    {
         "id": "984719fa76aba201",
         "type": "comment",
         "z": "1d2da0ecb43531e3",
         "name": "Bitte Anpassen",
         "info": "",
-        "x": 140,
-        "y": 300,
+        "x": 360,
+        "y": 80,
         "wires": []
     },
     {
@@ -702,7 +456,7 @@
         "z": "1d2da0ecb43531e3",
         "name": "EV Charger",
         "info": "Richtige Wallbox auswählen",
-        "x": 1370,
+        "x": 970,
         "y": 80,
         "wires": []
     },
@@ -712,7 +466,7 @@
         "z": "1d2da0ecb43531e3",
         "name": "Speichernutzung",
         "info": "",
-        "x": 1380,
+        "x": 980,
         "y": 400,
         "wires": []
     },
@@ -734,7 +488,7 @@
         },
         "name": "Netzbezugspunkt",
         "onlyChanges": false,
-        "x": 1590,
+        "x": 1170,
         "y": 440,
         "wires": []
     },
@@ -751,7 +505,7 @@
                 "from": "1",
                 "fromt": "num",
                 "to": "\"BezugsleistungMax\"",
-                "tot": "num"
+                "tot": "flow"
             },
             {
                 "t": "change",
@@ -768,11 +522,143 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1390,
+        "x": 970,
         "y": 440,
         "wires": [
             [
                 "5e3dd15418890bd5"
+            ]
+        ]
+    },
+    {
+        "id": "0c51d0c204ec39cb",
+        "type": "function",
+        "z": "1d2da0ecb43531e3",
+        "name": "Stunden filtern",
+        "func": "// Gehe davon aus, dass die Daten im Payload des Input-Objekts liegen\nvar data = msg.payload;\n\n// Sortiere die Daten nach dem Strompreis\ndata.data.sort(function(a, b) {\n    return a.marketprice - b.marketprice;\n});\n\n// Extrahiere die fünf günstigsten Einträge\nvar GünstigsteStunden = data.data.slice(0, flow.get(\"AnzahlStunden\"));\n\n// Erstelle eine neue Nachricht mit den gefilterten Daten\nmsg.payload = GünstigsteStunden;\nflow.set('GünstigsteStunden', GünstigsteStunden)\n\n// Gib die Nachricht aus\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 180,
+        "wires": [
+            [
+                "8eec1f226c042e36"
+            ]
+        ]
+    },
+    {
+        "id": "53556ad57a6b4b4b",
+        "type": "inject",
+        "z": "1d2da0ecb43531e3",
+        "name": "Täglicher Trigger",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "30 13 * * *",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 180,
+        "wires": [
+            [
+                "57cf21cbc848c7e2"
+            ]
+        ]
+    },
+    {
+        "id": "7811c30ac8cff4ef",
+        "type": "inject",
+        "z": "1d2da0ecb43531e3",
+        "name": "Parameter übernehmen",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 120,
+        "wires": [
+            [
+                "e202f02b7a337ac4"
+            ]
+        ]
+    },
+    {
+        "id": "9295c4c91e663f18",
+        "type": "change",
+        "z": "1d2da0ecb43531e3",
+        "name": "0",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "0",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 930,
+        "y": 120,
+        "wires": [
+            [
+                "247704ba12d5d659"
+            ]
+        ]
+    },
+    {
+        "id": "e2279e5fcd1c2d90",
+        "type": "change",
+        "z": "1d2da0ecb43531e3",
+        "name": "0",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "1",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 930,
+        "y": 300,
+        "wires": [
+            [
+                "6669a65cb2aa872e"
             ]
         ]
     }
