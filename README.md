@@ -20,5 +20,6 @@ Benutzerparameter zum selbsteinstellen:
 <img width="793" alt="image" src="https://github.com/Scooolt/aWATTar-smart-Victron-ESS-/assets/154541138/7e5882f6-5c1b-4b70-90db-c79cab47a273">
 
 Flowübersicht (noch mit einigen debug nodes)
-<img width="1096" alt="image" src="https://github.com/Scooolt/aWATTar-smart-Victron-ESS-/assets/154541138/a3867fcc-bc81-48da-a22f-25ad02d4ca11">
+<img width="963" alt="image" src="https://github.com/Scooolt/smart-aWATTar-Victron-flow/assets/154541138/1ea902bd-1063-4b79-a08e-ea44247026af">
+
 
